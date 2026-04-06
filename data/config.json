@@ -1,0 +1,53 @@
+{
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8080,
+    "debug": false
+  },
+  "security": {
+    "secret_key": "98a9d5cceeea82dd09a717b4ea6da007a77661a9c8cf306ff8904af67f67cae0",
+    "jwt_expiry_hours": 24,
+    "max_login_attempts": 5,
+    "lockout_minutes": 15,
+    "session_cookie_name": "_svs",
+    "admin_panel_path": "/sv-ctrl-x7k9-mngmt-2025",
+    "rate_limit_login": 10,
+    "rate_limit_register": 5,
+    "rate_limit_api": 120
+  },
+  "tmdb": {
+    "api_key": "9c514e5ccf41247cdf22b26dd5b33a98",
+    "base_url": "https://api.themoviedb.org/3"
+  },
+  "ranks": {
+    "Basic": {
+      "no_ads": true,
+      "hd_1080p": false,
+      "downloads": false,
+      "max_screens": 2,
+      "priority": 3,
+      "color": "#6246EA"
+    },
+    "Medium": {
+      "no_ads": true,
+      "hd_1080p": true,
+      "downloads": true,
+      "max_screens": 3,
+      "priority": 2,
+      "color": "#00C4FF"
+    },
+    "Premium": {
+      "no_ads": true,
+      "hd_1080p": true,
+      "downloads": true,
+      "max_screens": 4,
+      "priority": 1,
+      "color": "#F5C842"
+    }
+  },
+  "vixsrc": {
+    "base_url": "https://vixsrc.to",
+    "movie_path": "/movie/{id}",
+    "tv_path": "/tv/{id}/{season}/{episode}"
+  }
+}

@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Registrati — StreamVault</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08080F;--bg2:#0D0D16;--surface:#13131E;--surface2:#1A1A28;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);--p:#6246EA;--p-l:#8B72FF;--p-glow:rgba(98,70,234,.4);--white:#FFF;--txt:rgba(255,255,255,.95);--txt2:rgba(255,255,255,.62);--txt3:rgba(255,255,255,.35);--coral:#FF5E6A;--neon:#00E5B0;--gold:#F5C842;--font:'Outfit',system-ui,sans-serif;--r:10px;--r2:16px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--font);-webkit-font-smoothing:antialiased}
+body{display:flex;align-items:center;justify-content:center;min-height:100dvh;padding:16px}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+.card{position:relative;z-index:1;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);padding:36px 32px;width:100%;max-width:420px;box-shadow:0 48px 120px rgba(0,0,0,.8),0 0 0 1px rgba(98,70,234,.08)}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+.logo-icon{width:38px;height:38px;background:var(--p);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px var(--p-glow)}
+.logo-icon svg{width:18px;height:18px;fill:white}
+.logo-text{font-size:20px;font-weight:900;letter-spacing:-.6px}
+h1{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;text-align:center}
+.sub{font-size:13px;color:var(--txt2);text-align:center;margin-bottom:24px;font-weight:300}
+.field{margin-bottom:14px}
+label{display:block;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--txt2);margin-bottom:6px}
+input[type=text],input[type=password]{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:11px 14px;color:var(--txt);font-family:var(--font);font-size:14px;transition:border-color .2s,box-shadow .2s;outline:none}
+input:focus{border-color:var(--p-l);box-shadow:0 0 0 3px rgba(98,70,234,.18)}
+input::placeholder{color:var(--txt3)}
+input.error{border-color:var(--coral)}
+input.ok{border-color:var(--neon)}
+.hint{font-size:10px;color:var(--txt3);margin-top:4px}
+.hp-field{position:absolute;left:-9999px;top:-9999px;opacity:0;pointer-events:none}
+/* Rank preview */
+.rank-preview{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.rank-badge{flex:1;min-width:90px;padding:10px 8px;border-radius:var(--r);border:1px solid var(--border2);text-align:center;background:var(--surface2)}
+.rank-badge .rank-name{font-size:11px;font-weight:800;letter-spacing:.4px;margin-bottom:4px}
+.rank-badge .rank-perks{font-size:9px;color:var(--txt3);line-height:1.5}
+.rank-badge[data-rank="Basic"] .rank-name{color:#8B72FF}
+.rank-badge[data-rank="Medium"] .rank-name{color:#00C4FF}
+.rank-badge[data-rank="Premium"] .rank-name{color:#F5C842}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:40px;background:var(--p);color:white;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s;box-shadow:0 4px 20px var(--p-glow);margin-top:8px;min-height:44px}
+.btn:hover{background:var(--p-l);transform:translateY(-1px)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.divider{display:flex;align-items:center;gap:10px;margin:20px 0;color:var(--txt3);font-size:11px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+.link-row{text-align:center;font-size:12px;color:var(--txt2)}
+.link-row a{color:var(--p-l);text-decoration:none;font-weight:600}
+.link-row a:hover{text-decoration:underline}
+.back-link{display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;color:var(--txt3);cursor:pointer;text-decoration:none;margin-top:16px;transition:color .18s}
+.back-link:hover{color:var(--p-l)}
+.alert{padding:10px 14px;border-radius:var(--r);font-size:12px;font-weight:500;margin-bottom:14px;display:none}
+.alert.error{background:rgba(255,94,106,.12);border:1px solid rgba(255,94,106,.3);color:var(--coral)}
+.alert.success{background:rgba(0,229,176,.1);border:1px solid rgba(0,229,176,.28);color:var(--neon)}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none}
+.strength-bar{height:3px;border-radius:2px;background:var(--border2);margin-top:6px;overflow:hidden}
+.strength-fill{height:100%;border-radius:2px;transition:width .3s,background .3s}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="logo-icon"><svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg></div>
+    <span class="logo-text">StreamVault</span>
+  </div>
+  <h1>Crea Account</h1>
+  <p class="sub">Tutti gli account partono con il rank <strong>Basic</strong> — upgradabile dall'admin</p>
+
+  <div class="rank-preview">
+    <div class="rank-badge" data-rank="Basic">
+      <div class="rank-name">⚡ BASIC</div>
+      <div class="rank-perks">No ads<br>2 schermi</div>
+    </div>
+    <div class="rank-badge" data-rank="Medium">
+      <div class="rank-name">💎 MEDIUM</div>
+      <div class="rank-perks">No ads • 1080p<br>Download • 3 schermi</div>
+    </div>
+    <div class="rank-badge" data-rank="Premium">
+      <div class="rank-name">👑 PREMIUM</div>
+      <div class="rank-perks">No ads • 1080p<br>Download • 4 schermi</div>
+    </div>
+  </div>
+
+  <div class="alert" id="alert"></div>
+
+  <form id="regForm" autocomplete="off" novalidate>
+    <div class="hp-field" aria-hidden="true">
+      <input type="text" name="email" tabindex="-1" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Scegli un username" autocomplete="username" required maxlength="32">
+      <div class="hint">3-32 caratteri: lettere, numeri, _ - .</div>
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="Crea una password sicura" autocomplete="new-password" required maxlength="128">
+      <div class="strength-bar"><div class="strength-fill" id="strengthFill"></div></div>
+      <div class="hint" id="strengthHint">Minimo 8 caratteri</div>
+    </div>
+    <div class="field">
+      <label for="confirm_password">Conferma Password</label>
+      <input type="password" id="confirm_password" name="confirm_password" placeholder="Ripeti la password" autocomplete="new-password" required maxlength="128">
+    </div>
+
+    <button type="submit" class="btn" id="submitBtn">
+      <div class="spinner" id="spinner"></div>
+      <span id="btnText">Registrati</span>
+    </button>
+  </form>
+
+  <div class="divider">hai già un account?</div>
+  <div class="link-row"><a href="/login">Accedi</a></div>
+  <a href="/" class="back-link">← Torna alla home</a>
+</div>
+
+<script>
+(function(){
+  const form    = document.getElementById('regForm');
+  const alertEl = document.getElementById('alert');
+  const spinner = document.getElementById('spinner');
+  const btnText = document.getElementById('btnText');
+  const btn     = document.getElementById('submitBtn');
+  const pwInput = document.getElementById('password');
+  const sfill   = document.getElementById('strengthFill');
+  const shint   = document.getElementById('strengthHint');
+
+  function showAlert(msg, type='error'){
+    alertEl.textContent = msg;
+    alertEl.className = 'alert ' + type;
+    alertEl.style.display = 'block';
+  }
+  function setLoading(on){
+    btn.disabled = on;
+    spinner.style.display = on ? 'block' : 'none';
+    btnText.textContent = on ? 'Registrazione…' : 'Registrati';
+  }
+
+  // Password strength indicator
+  pwInput.addEventListener('input', () => {
+    const pw = pwInput.value;
+    let strength = 0;
+    if(pw.length >= 8) strength++;
+    if(pw.length >= 12) strength++;
+    if(/[A-Z]/.test(pw)) strength++;
+    if(/[0-9]/.test(pw)) strength++;
+    if(/[^a-zA-Z0-9]/.test(pw)) strength++;
+    const pct = Math.min(100, strength * 20);
+    const colors = ['#FF5E6A','#FF5E6A','#F5C842','#00E5B0','#6246EA','#8B72FF'];
+    const labels = ['','Molto debole','Debole','Discreta','Buona','Ottima'];
+    sfill.style.width = pct + '%';
+    sfill.style.background = colors[strength] || colors[0];
+    shint.textContent = labels[strength] || 'Minimo 8 caratteri';
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    alertEl.style.display = 'none';
+    const username         = document.getElementById('username').value.trim();
+    const password         = document.getElementById('password').value;
+    const confirm_password = document.getElementById('confirm_password').value;
+    const hp = form.querySelector('input[name="email"]').value;
+
+    if(!username || !password || !confirm_password){ showAlert('Compila tutti i campi'); return; }
+    if(!/^[a-zA-Z0-9_\-\.]{3,32}$/.test(username)){ showAlert('Username non valido (3-32 char: lettere, numeri, _ - .)'); return; }
+    if(password.length < 8){ showAlert('Password troppo corta (min 8 caratteri)'); return; }
+    if(password !== confirm_password){ showAlert('Le password non coincidono'); return; }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/auth/register', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        credentials: 'same-origin',
+        body: JSON.stringify({ username, password, confirm_password, email: hp })
+      });
+      const data = await res.json();
+      if(data.ok){
+        showAlert('Account creato! Reindirizzamento…', 'success');
+        setTimeout(() => { window.location.href = '/'; }, 700);
+      } else {
+        showAlert(data.error || 'Errore durante la registrazione');
+        setLoading(false);
+      }
+    } catch(err){
+      showAlert('Errore di rete. Riprova.');
+      setLoading(false);
+    }
+  });
+})();
+</script>
+</body>
+</html>

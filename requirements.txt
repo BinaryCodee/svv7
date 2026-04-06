@@ -1,0 +1,12 @@
+# StreamVault v7 — Python dependencies
+# All security logic uses Python stdlib only (no bcrypt needed).
+# For production with bcrypt, uncomment:
+# bcrypt>=4.0.0
+
+# Optional: faster JSON
+# orjson>=3.9.0
+
+# If you want to use PyJWT instead of our built-in JWT:
+# PyJWT>=2.8.0
+
+# Python >= 3.11 required (uses X | Y type hints, match statements)

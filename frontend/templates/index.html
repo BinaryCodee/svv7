@@ -1,0 +1,1321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- ── VIEWPORT: cover notch/safe-area on all devices ── -->
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,minimum-scale=1,maximum-scale=5">
+<meta name="theme-color" content="#08080F">
+<meta name="color-scheme" content="dark">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="StreamVault">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="format-detection" content="telephone=no">
+<!-- SEO & performance -->
+<title>StreamVault — Streaming Online</title>
+<meta name="description" content="StreamVault: guarda film e serie TV in streaming, con supporto multi-lingua e 12 server player.">
+<meta property="og:title" content="StreamVault">
+<meta property="og:description" content="Film e serie TV in streaming, multi-lingua.">
+<meta property="og:type" content="website">
+<!-- Preconnect to critical origins for faster loading -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://api.themoviedb.org">
+<link rel="preconnect" href="https://image.tmdb.org">
+<!-- DNS prefetch for embed sources (non-blocking) -->
+<link rel="dns-prefetch" href="https://vixsrc.to">
+<link rel="dns-prefetch" href="https://vidsrc.to">
+<link rel="dns-prefetch" href="https://vidsrc.me">
+<!-- Font: swap so text shows before font loads -->
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+<noscript><link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"></noscript>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%236246EA'/><polygon points='10,8 10,24 26,16' fill='white'/></svg>">
+<!-- iOS icons -->
+<link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 180 180'><rect width='180' height='180' rx='40' fill='%236246EA'/><polygon points='55,45 55,135 145,90' fill='white'/></svg>">
+
+<style>
+/* ════════════════════════════════════════════════
+   STREAMVAULT v7 — RESPONSIVE + PERFORMANCE
+   Breakpoints:
+   • Mobile portrait  : <480px
+   • Mobile landscape : 480-767px
+   • Tablet portrait  : 768-1023px
+   • Tablet landscape : 1024-1279px  (sidebar collapsed icon)
+   • Desktop/TV       : 1280px+      (full sidebar)
+   • 4K/TV            : 1920px+      (larger everything)
+   ════════════════════════════════════════════════ */
+
+:root{
+  --bg:#08080F;--bg2:#0D0D16;--surface:#13131E;--surface2:#1A1A28;--surface3:#212133;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);
+  --p:#6246EA;--p-l:#8B72FF;--p-ll:#B3A0FF;--p-d:#3D28BE;
+  --p-glow:rgba(98,70,234,.4);--p-glow2:rgba(98,70,234,.18);
+  --white:#FFF;--txt:rgba(255,255,255,.95);--txt2:rgba(255,255,255,.62);--txt3:rgba(255,255,255,.35);
+  --gold:#F5C842;--coral:#FF5E6A;--neon:#00E5B0;
+  /* Layout */
+  --sidebar-w:240px;--topbar-h:60px;
+  /* Spacing scale */
+  --sp-xs:4px;--sp-sm:8px;--sp-md:16px;--sp-lg:24px;--sp-xl:36px;--sp-2xl:48px;
+  /* Typography scale */
+  --fs-xs:10px;--fs-sm:12px;--fs-base:14px;--fs-md:16px;--fs-lg:20px;--fs-xl:24px;--fs-2xl:32px;
+  /* Border radius */
+  --r:10px;--r2:16px;--r3:22px;
+  --font:'Outfit',system-ui,-apple-system,sans-serif;
+  --ease:cubic-bezier(.25,.46,.45,.94);--bounce:cubic-bezier(.34,1.56,.64,1);
+  /* Safe areas (iPhone notch / home bar) */
+  --sat:env(safe-area-inset-top,0px);
+  --sab:env(safe-area-inset-bottom,0px);
+  --sal:env(safe-area-inset-left,0px);
+  --sar:env(safe-area-inset-right,0px);
+}
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;-webkit-tap-highlight-color:transparent;height:100%}
+body{
+  background:var(--bg);color:var(--txt);font-family:var(--font);
+  font-size:var(--fs-base);line-height:1.5;min-height:100%;min-height:100dvh;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  text-rendering:optimizeLegibility;
+  /* Prevent text size adjust on orientation change */
+  -webkit-text-size-adjust:100%;text-size-adjust:100%;
+}
+img{display:block;max-width:100%;height:auto}
+button{font-family:var(--font);cursor:pointer;border:none;background:none;outline:none;-webkit-appearance:none}
+a{text-decoration:none;color:inherit}
+ul{list-style:none}
+input,select{font-family:var(--font);outline:none;-webkit-appearance:none}
+/* Prevent double-tap zoom on buttons */
+button,a,[role=button]{touch-action:manipulation}
+
+/* ── PERFORMANCE: will-change only on animating elements ── */
+.card{will-change:transform}
+#sidebar{will-change:transform}
+#hero-bg{will-change:opacity}
+
+/* ── NOISE GRAIN (disabled on low-perf devices via @media) ── */
+@media(prefers-reduced-motion:no-preference){
+  body::before{
+    content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.02;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size:200px
+  }
+}
+
+/* ══════════════════════════════════════
+   LAYOUT
+   ══════════════════════════════════════ */
+#layout{display:flex;min-height:100%;min-height:100dvh}
+
+/* ══════════════════════════════════════
+   SIDEBAR — desktop full, tablet icon, mobile drawer
+   ══════════════════════════════════════ */
+#sidebar{
+  position:fixed;top:0;left:0;bottom:0;width:var(--sidebar-w);
+  background:var(--bg2);border-right:1px solid var(--border2);
+  z-index:200;display:flex;flex-direction:column;overflow:hidden;
+  transition:transform .28s var(--ease),width .28s var(--ease);
+  /* Support safe area left (landscape notch) */
+  padding-left:var(--sal)
+}
+
+/* ── sidebar logo ── */
+.sidebar-logo{
+  display:flex;align-items:center;gap:10px;
+  padding:18px 18px 16px;
+  font-size:18px;font-weight:900;letter-spacing:-.7px;color:var(--white);
+  cursor:pointer;border-bottom:1px solid var(--border);
+  user-select:none;flex-shrink:0;white-space:nowrap;overflow:hidden
+}
+.sidebar-logo-icon{
+  width:32px;height:32px;background:var(--p);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 20px var(--p-glow);flex-shrink:0
+}
+.sidebar-logo-icon svg{width:16px;height:16px;fill:white}
+.sidebar-logo-text{overflow:hidden;white-space:nowrap}
+
+/* ── sidebar search ── */
+.sidebar-search{padding:10px 12px;border-bottom:1px solid var(--border);flex-shrink:0}
+.sidebar-search-wrap{
+  display:flex;align-items:center;gap:7px;
+  background:var(--surface2);border:1px solid var(--border2);
+  border-radius:40px;padding:0 12px;height:34px;transition:all .25s
+}
+.sidebar-search-wrap:focus-within{border-color:var(--p-l);box-shadow:0 0 0 3px var(--p-glow2)}
+.sidebar-search-wrap svg{color:var(--txt3);flex-shrink:0;width:13px;height:13px}
+.sidebar-search-wrap input{
+  flex:1;background:none;border:none;color:var(--txt);
+  font-size:var(--fs-sm);min-width:0;
+  /* iOS fix: prevent zoom on focus */
+  font-size:16px
+}
+@media(min-width:480px){.sidebar-search-wrap input{font-size:var(--fs-sm)}}
+.sidebar-search-wrap input::placeholder{color:var(--txt3)}
+
+/* ── sidebar nav ── */
+.sidebar-nav{flex:1;overflow-y:auto;padding:8px;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.sidebar-nav::-webkit-scrollbar{display:none}
+.sidebar-section-label{
+  font-size:9px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--txt3);padding:8px 10px 5px;white-space:nowrap;overflow:hidden
+}
+.sidebar-link{
+  display:flex;align-items:center;gap:10px;
+  padding:10px 10px;border-radius:var(--r);
+  font-size:var(--fs-sm);font-weight:500;color:var(--txt2);
+  cursor:pointer;transition:all .15s;margin-bottom:2px;
+  position:relative;white-space:nowrap;overflow:hidden;
+  /* Larger touch target */
+  min-height:44px
+}
+.sidebar-link svg{width:17px;height:17px;flex-shrink:0;opacity:.7;transition:opacity .15s}
+.sidebar-link-label{overflow:hidden;white-space:nowrap}
+.sidebar-link:hover,.sidebar-link:focus-visible{background:rgba(255,255,255,.05);color:var(--txt)}
+.sidebar-link:hover svg,.sidebar-link:focus-visible svg{opacity:1}
+.sidebar-link.active{background:rgba(98,70,234,.16);color:var(--p-ll);font-weight:600}
+.sidebar-link.active svg{opacity:1}
+.sidebar-link.active::before{
+  content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);
+  width:3px;height:55%;background:var(--p-l);border-radius:2px
+}
+.sidebar-wl-badge{
+  margin-left:auto;background:var(--p);color:white;
+  border-radius:20px;padding:1px 6px;font-size:9px;font-weight:700;display:none;flex-shrink:0
+}
+.sidebar-divider{height:1px;background:var(--border);margin:6px 8px}
+
+/* ── language grid ── */
+.sidebar-lang-section{padding:8px;flex-shrink:0;border-top:1px solid var(--border)}
+.sidebar-lang-label{
+  font-size:9px;font-weight:700;letter-spacing:1.4px;text-transform:uppercase;
+  color:var(--txt3);padding:0 4px 7px;display:block;white-space:nowrap;overflow:hidden
+}
+.sidebar-lang-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:3px}
+.sidebar-lang-btn{
+  display:flex;flex-direction:column;align-items:center;gap:2px;
+  padding:6px 2px;border-radius:var(--r);cursor:pointer;
+  transition:all .15s;border:1px solid transparent;background:none;
+  min-height:44px;justify-content:center
+}
+.sidebar-lang-btn:hover{background:var(--surface2);border-color:var(--border2)}
+.sidebar-lang-btn.active{background:rgba(98,70,234,.18);border-color:rgba(98,70,234,.4)}
+.sidebar-lang-flag{font-size:16px;line-height:1}
+.sidebar-lang-code{font-size:8px;font-weight:700;letter-spacing:.4px;color:var(--txt3);text-transform:uppercase}
+.sidebar-lang-btn.active .sidebar-lang-code{color:var(--p-ll)}
+
+/* ── sidebar bottom ── */
+.sidebar-bottom{
+  padding:10px 12px;border-top:1px solid var(--border);
+  display:flex;gap:6px;flex-shrink:0;
+  padding-bottom:calc(10px + var(--sab))
+}
+
+/* ══════════════════════════════════════
+   TABLET ICON MODE (1024–1279px)
+   ══════════════════════════════════════ */
+@media(min-width:1024px) and (max-width:1279px){
+  :root{--sidebar-w:64px}
+  .sidebar-logo-text,.sidebar-link-label,.sidebar-section-label,
+  .sidebar-lang-label,.sidebar-lang-code,.sidebar-wl-badge,
+  .sidebar-search,.sidebar-bottom,.sidebar-lang-section{display:none}
+  .sidebar-logo{justify-content:center;padding:16px 0}
+  .sidebar-link{justify-content:center;padding:12px 0;min-height:48px}
+  .sidebar-link.active::before{display:none}
+  /* tooltip on hover */
+  .sidebar-link[title]:hover::after{
+    content:attr(title);
+    position:absolute;left:calc(100% + 10px);top:50%;transform:translateY(-50%);
+    background:var(--surface3);color:var(--txt);font-size:11px;font-weight:500;
+    padding:4px 10px;border-radius:6px;white-space:nowrap;pointer-events:none;
+    border:1px solid var(--border2);z-index:300
+  }
+  #main{margin-left:64px}
+}
+
+/* ══════════════════════════════════════
+   MAIN CONTENT
+   ══════════════════════════════════════ */
+#main{margin-left:var(--sidebar-w);flex:1;min-width:0;display:flex;flex-direction:column}
+
+/* ══════════════════════════════════════
+   TOPBAR
+   ══════════════════════════════════════ */
+#topbar{
+  position:sticky;top:0;z-index:150;
+  height:calc(var(--topbar-h) + var(--sat));
+  padding-top:var(--sat);
+  display:flex;align-items:center;padding-left:max(24px,var(--sal));padding-right:max(20px,var(--sar));
+  gap:10px;
+  background:rgba(8,8,15,.9);
+  backdrop-filter:blur(24px) saturate(1.3);
+  -webkit-backdrop-filter:blur(24px) saturate(1.3);
+  border-bottom:1px solid var(--border)
+}
+.topbar-title{font-size:var(--fs-md);font-weight:800;letter-spacing:-.4px;color:var(--white)}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:7px}
+
+/* Mobile lang button (shows on tablet/mobile) */
+.topbar-lang-btn{
+  display:none;align-items:center;gap:5px;padding:6px 11px;border-radius:40px;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--txt);font-size:var(--fs-sm);font-weight:600;
+  cursor:pointer;transition:all .2s;min-height:36px
+}
+.topbar-lang-btn:hover{border-color:var(--p-l);color:var(--p-ll)}
+.topbar-lang-flag{font-size:15px}
+.topbar-lang-code{font-size:11px;font-weight:700}
+
+/* Hamburger */
+.hamburger{
+  display:none;width:36px;height:36px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--txt2);align-items:center;justify-content:center;cursor:pointer;flex-shrink:0
+}
+.hamburger svg{width:16px;height:16px}
+
+/* WL icon */
+.topbar-icon-btn{
+  width:36px;height:36px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--txt2);display:flex;align-items:center;justify-content:center;
+  transition:all .2s;cursor:pointer;position:relative;flex-shrink:0
+}
+.topbar-icon-btn:hover{border-color:var(--p-l);color:var(--p-ll)}
+.topbar-icon-btn svg{width:15px;height:15px}
+.topbar-wl-badge{
+  position:absolute;top:-2px;right:-2px;background:var(--p);color:white;
+  font-size:8px;font-weight:700;width:14px;height:14px;border-radius:50%;
+  display:none;align-items:center;justify-content:center
+}
+
+/* Sidebar overlay */
+#sidebar-overlay{
+  position:fixed;inset:0;z-index:199;
+  background:rgba(4,4,12,.78);backdrop-filter:blur(6px);
+  display:none;opacity:0;transition:opacity .28s
+}
+#sidebar-overlay.open{display:block;opacity:1}
+
+/* ══════════════════════════════════════
+   HERO
+   ══════════════════════════════════════ */
+#hero{
+  position:relative;height:88vh;min-height:480px;max-height:900px;
+  display:flex;align-items:flex-end;overflow:hidden
+}
+#hero-bg{
+  position:absolute;inset:0;background-size:cover;
+  background-position:center 20%;background-color:var(--bg2);
+  transition:opacity .7s var(--ease)
+}
+#hero-bg::after{
+  content:'';position:absolute;inset:0;
+  background:
+    linear-gradient(to right,rgba(8,8,15,.97) 0%,rgba(8,8,15,.68) 40%,rgba(8,8,15,.08) 70%,transparent 100%),
+    linear-gradient(to top,rgba(8,8,15,1) 0%,rgba(8,8,15,.55) 20%,transparent 48%),
+    linear-gradient(to bottom,rgba(8,8,15,.4) 0%,transparent 14%)
+}
+.hero-content{
+  position:relative;z-index:2;
+  padding:0 var(--sp-xl) calc(64px + var(--sab)) var(--sp-xl);
+  max-width:min(660px,85vw)
+}
+.hero-badge{
+  display:inline-flex;align-items:center;gap:6px;
+  background:rgba(98,70,234,.2);border:1px solid rgba(98,70,234,.42);
+  padding:4px 12px;border-radius:40px;
+  font-size:9px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;
+  color:var(--p-ll);margin-bottom:14px
+}
+.hero-dot{width:5px;height:5px;border-radius:50%;background:var(--p-l);animation:pulse 1.5s ease-in-out infinite}
+.hero-title{
+  font-size:clamp(28px,5.5vw,68px);font-weight:900;
+  letter-spacing:clamp(-1.5px,-0.04em,-2.5px);line-height:.94;
+  margin-bottom:14px;color:var(--white)
+}
+.hero-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.hero-chip{
+  display:flex;align-items:center;gap:4px;font-size:11px;font-weight:500;
+  color:var(--txt2);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.12);
+  padding:3px 10px;border-radius:40px
+}
+.hero-rating{color:var(--gold);background:rgba(245,200,66,.12);border-color:rgba(245,200,66,.25)}
+.hero-desc{
+  font-size:clamp(12px,1.5vw,14px);font-weight:300;line-height:1.7;
+  color:rgba(255,255,255,.6);margin-bottom:24px;max-width:440px;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden
+}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap}
+.btn-hero-play{
+  display:inline-flex;align-items:center;gap:9px;
+  background:var(--white);color:#08080F;font-size:var(--fs-base);font-weight:700;
+  padding:11px 24px;border-radius:40px;transition:all .25s var(--ease);
+  letter-spacing:-.1px;font-family:var(--font);border:none;cursor:pointer;
+  min-height:44px
+}
+.btn-hero-play:hover{background:rgba(255,255,255,.88);transform:scale(1.03)}
+.btn-hero-play:active{transform:scale(.97)}
+.btn-hero-play svg{width:14px;height:14px}
+.btn-hero-info{
+  display:inline-flex;align-items:center;gap:9px;
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);
+  color:var(--white);font-size:var(--fs-base);font-weight:600;
+  padding:11px 24px;border-radius:40px;transition:all .25s;
+  backdrop-filter:blur(10px);font-family:var(--font);cursor:pointer;min-height:44px
+}
+.btn-hero-info:hover{background:rgba(255,255,255,.18)}
+.btn-hero-info:active{transform:scale(.97)}
+.btn-hero-info svg{width:14px;height:14px}
+.hero-indicators{position:absolute;bottom:24px;right:var(--sp-xl);z-index:3;display:flex;gap:5px;align-items:center}
+.hero-ind{height:3px;border-radius:2px;background:rgba(255,255,255,.22);cursor:pointer;transition:all .32s;width:20px}
+.hero-ind.active{width:36px;background:var(--white)}
+
+/* ══════════════════════════════════════
+   SECTIONS & CARDS
+   ══════════════════════════════════════ */
+.section{padding:0 var(--sp-xl);margin-bottom:40px}
+.section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+.section-title{font-size:var(--fs-lg);font-weight:800;letter-spacing:-.4px;color:var(--white)}
+.section-more{
+  font-size:var(--fs-sm);font-weight:600;color:var(--p-ll);
+  cursor:pointer;display:flex;align-items:center;gap:3px;transition:gap .18s;opacity:.8;
+  min-height:36px;align-items:center
+}
+.section-more:hover{gap:7px;opacity:1}
+
+/* Scroll row */
+.scroll-row{
+  display:flex;gap:12px;overflow-x:auto;padding-bottom:6px;
+  scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  scroll-snap-type:x mandatory;scroll-padding:0 var(--sp-xl)
+}
+.scroll-row::-webkit-scrollbar{display:none}
+.scroll-row .card{flex:0 0 160px;scroll-snap-align:start}
+
+/* Cards grid — auto-fill responsive */
+.cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(min(160px,calc(50vw - 24px)),1fr));
+  gap:12px
+}
+
+/* ── CARD ── */
+.card{
+  border-radius:var(--r2);overflow:hidden;position:relative;cursor:pointer;
+  background:var(--surface);
+  transition:transform .35s var(--bounce),box-shadow .35s var(--ease);
+  animation:cardIn .45s var(--ease) both;border:1px solid var(--border)
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(18px) scale(.97)}to{opacity:1;transform:translateY(0) scale(1)}}
+/* Hover only on pointer devices (not touch) */
+@media(hover:hover){
+  .card:hover{
+    transform:translateY(-6px) scale(1.03);
+    box-shadow:0 24px 64px rgba(0,0,0,.7),0 0 0 1px rgba(98,70,234,.28),0 0 32px rgba(98,70,234,.1);
+    border-color:rgba(98,70,234,.28);z-index:10
+  }
+  .card:hover .card-poster{transform:scale(1.07)}
+  .card:hover .card-hover-layer{opacity:1}
+  .card:hover .card-score-badge{display:flex;align-items:center;gap:2px}
+}
+/* Touch feedback */
+.card:active{transform:scale(.97);opacity:.88}
+
+.card-poster-wrap{position:relative;aspect-ratio:2/3;overflow:hidden;background:var(--surface2)}
+.card-poster{width:100%;height:100%;object-fit:cover;transition:transform .45s var(--ease);display:block}
+.card-gradient{position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to top,rgba(8,8,15,.95) 0%,rgba(8,8,15,.35) 50%,transparent 100%);pointer-events:none;z-index:1}
+.card-hover-layer{
+  position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(8,8,15,1) 0%,rgba(8,8,15,.72) 36%,rgba(8,8,15,.16) 66%,transparent 100%);
+  opacity:0;transition:opacity .28s var(--ease);z-index:2;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:12px;gap:6px
+}
+.card-type{
+  position:absolute;top:8px;left:8px;z-index:3;
+  background:rgba(8,8,15,.8);border:1px solid rgba(255,255,255,.1);
+  border-radius:6px;width:24px;height:24px;display:flex;align-items:center;justify-content:center;
+  font-size:11px;backdrop-filter:blur(6px)
+}
+.card-wl{
+  position:absolute;top:8px;right:8px;z-index:3;
+  background:rgba(8,8,15,.75);border:1px solid rgba(255,255,255,.11);
+  border-radius:50%;width:28px;height:28px;display:flex;align-items:center;justify-content:center;
+  font-size:13px;cursor:pointer;transition:all .22s var(--bounce);backdrop-filter:blur(6px);
+  min-height:28px;/* don't override – keep small on cards */
+}
+.card-wl:hover,.card-wl.active{background:rgba(255,94,106,.22);border-color:var(--coral);transform:scale(1.14)}
+.card-wl.active{color:var(--coral)}
+.card-score-badge{
+  position:absolute;top:44px;right:8px;z-index:3;
+  background:rgba(245,200,66,.14);border:1px solid rgba(245,200,66,.28);
+  padding:2px 6px;border-radius:18px;font-size:9px;font-weight:700;color:var(--gold);
+  backdrop-filter:blur(6px);display:none
+}
+.card-hover-title{font-size:11px;font-weight:700;color:var(--white);line-height:1.22;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;letter-spacing:-.15px}
+.card-hover-meta{font-size:9px;color:rgba(255,255,255,.48);display:flex;align-items:center;gap:4px}
+.card-play-btn{
+  display:flex;align-items:center;justify-content:center;gap:5px;
+  background:var(--p);color:white;font-size:11px;font-weight:700;
+  padding:8px 0;border-radius:40px;border:none;cursor:pointer;
+  transition:all .18s var(--ease);box-shadow:0 4px 16px var(--p-glow);font-family:var(--font);
+  min-height:34px
+}
+.card-play-btn:hover{background:var(--p-l)}
+.card-play-btn:active{transform:scale(.96)}
+.card-play-btn svg{width:10px;height:10px}
+.card-body{padding:9px 10px 11px}
+.card-title{font-size:11px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:3px;letter-spacing:-.1px;color:var(--txt)}
+.card-meta-row{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.card-year{color:var(--txt3);font-size:10px;font-weight:500}
+.card-score{color:var(--gold);font-size:10px;font-weight:700}
+.card-lang-tag{font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:.7px;color:var(--txt3);background:var(--surface2);border:1px solid var(--border);padding:1px 4px;border-radius:4px}
+
+/* ── SKELETON ── */
+.skeleton{
+  background:linear-gradient(90deg,var(--surface2) 25%,var(--surface3) 50%,var(--surface2) 75%);
+  background-size:200% 100%;animation:shimmer 1.8s infinite;border-radius:var(--r2)
+}
+.skel-poster{aspect-ratio:2/3}
+@keyframes shimmer{0%{background-position:200% 0}100%{background-position:-200% 0}}
+
+/* ══════════════════════════════════════
+   PAGES
+   ══════════════════════════════════════ */
+.page-view{display:none;padding-top:24px;min-height:60vh}
+.page-view.active{display:block;animation:fadeUp .28s var(--ease)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.genre-filters{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:20px;padding:0 var(--sp-xl);overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.genre-filters::-webkit-scrollbar{display:none}
+.genre-pill{
+  padding:6px 14px;border-radius:40px;font-size:11px;font-weight:600;
+  background:var(--surface2);border:1px solid var(--border2);color:var(--txt2);
+  cursor:pointer;transition:all .18s;white-space:nowrap;flex-shrink:0;min-height:34px
+}
+.genre-pill:hover{border-color:var(--p-l);color:var(--txt)}
+.genre-pill.active{background:var(--p);border-color:var(--p);color:white}
+.load-more-wrap{text-align:center;padding:24px 0 12px}
+.page-title-bar{padding:0 var(--sp-xl) 16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.page-title{font-size:clamp(20px,4vw,26px);font-weight:900;letter-spacing:-.7px;color:var(--white)}
+
+/* ══════════════════════════════════════
+   BUTTONS
+   ══════════════════════════════════════ */
+.btn-primary{
+  display:inline-flex;align-items:center;gap:7px;background:var(--p);color:white;
+  border-radius:40px;padding:9px 20px;font-size:var(--fs-sm);font-weight:600;
+  transition:all .2s;box-shadow:0 4px 16px var(--p-glow);font-family:var(--font);cursor:pointer;
+  min-height:36px
+}
+.btn-primary:hover{background:var(--p-l);transform:translateY(-1px)}
+.btn-primary:active{transform:scale(.96)}
+.btn-ghost{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(255,255,255,.07);border:1px solid var(--border2);color:var(--txt);
+  border-radius:40px;padding:9px 20px;font-size:var(--fs-sm);font-weight:500;
+  transition:all .2s;font-family:var(--font);cursor:pointer;min-height:36px
+}
+.btn-ghost:hover{background:rgba(255,255,255,.13)}
+.btn-ghost:active{transform:scale(.96)}
+.btn-sm{padding:6px 14px;font-size:11px;min-height:32px}
+
+/* ══════════════════════════════════════
+   MODAL (detail)
+   ══════════════════════════════════════ */
+#detail-modal{position:fixed;inset:0;z-index:999;display:none;overflow-y:auto;overscroll-behavior:contain;-webkit-overflow-scrolling:touch}
+#detail-modal.open{display:block}
+.modal-backdrop{position:fixed;inset:0;background:rgba(4,4,12,.95);backdrop-filter:blur(28px);-webkit-backdrop-filter:blur(28px)}
+.modal-container{
+  position:relative;z-index:1;max-width:900px;margin:24px auto;
+  padding:0 12px calc(40px + var(--sab));animation:modalIn .32s var(--bounce)
+}
+@keyframes modalIn{from{opacity:0;transform:scale(.95) translateY(16px)}to{opacity:1;transform:scale(1) translateY(0)}}
+.modal-card{background:var(--surface);border:1px solid var(--border2);border-radius:var(--r3);overflow:hidden;box-shadow:0 48px 120px rgba(0,0,0,.95),0 0 0 1px rgba(98,70,234,.1)}
+
+/* Modal hero video area */
+.modal-hero{position:relative;aspect-ratio:16/9;background:#000;overflow:hidden}
+.modal-hero-img{width:100%;height:100%;object-fit:cover;object-position:center 20%;transition:opacity .45s}
+.modal-hero::after{content:'';position:absolute;inset:0;background:linear-gradient(to bottom,rgba(19,19,30,.45) 0%,transparent 26%,transparent 50%,rgba(19,19,30,1) 100%),linear-gradient(to right,rgba(19,19,30,.75) 0%,transparent 48%);pointer-events:none;z-index:1;transition:opacity .4s}
+.modal-hero.playing::after,.modal-hero.playing .modal-hero-img{opacity:0}
+.modal-hero.playing .modal-hero-content,.modal-hero.playing .modal-hero-play-btn{opacity:0;pointer-events:none}
+#modal-hero-player{position:absolute;inset:0;width:100%;height:100%;border:none;background:#000;display:none;z-index:5}
+.modal-hero.playing #modal-hero-player{display:block}
+
+/* Play button */
+.modal-hero-play-btn{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:3;
+  width:clamp(60px,10vw,76px);height:clamp(60px,10vw,76px);border-radius:50%;
+  background:rgba(255,255,255,.1);border:2px solid rgba(255,255,255,.35);
+  color:white;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;backdrop-filter:blur(14px);transition:all .28s var(--bounce)
+}
+.modal-hero-play-btn:hover{background:var(--p);border-color:var(--p);transform:translate(-50%,-50%) scale(1.1);box-shadow:0 0 52px var(--p-glow)}
+.modal-hero-play-btn:active{transform:translate(-50%,-50%) scale(.95)}
+.modal-hero-play-btn svg{width:clamp(22px,4vw,28px);height:clamp(22px,4vw,28px);margin-left:3px}
+
+/* Stop button — top-right of video, only during playback */
+.modal-hero-stop-btn{
+  position:absolute;top:10px;right:10px;z-index:10;display:none;
+  width:34px;height:34px;border-radius:50%;
+  background:rgba(8,8,15,.85);border:1px solid var(--border2);
+  color:var(--txt);font-size:16px;align-items:center;justify-content:center;
+  cursor:pointer;backdrop-filter:blur(8px);transition:all .18s
+}
+.modal-hero.playing .modal-hero-stop-btn{display:flex}
+.modal-hero.playing .modal-close{display:none} /* hide modal-close when playing — stop btn replaces it */
+.modal-hero-stop-btn:hover{background:var(--coral);color:white;border-color:transparent}
+
+/* Close — shown only when NOT playing */
+.modal-close{
+  position:absolute;top:10px;right:10px;z-index:10;width:34px;height:34px;
+  border-radius:50%;background:rgba(8,8,15,.82);border:1px solid var(--border2);
+  color:var(--txt);font-size:17px;display:flex;align-items:center;justify-content:center;
+  cursor:pointer;backdrop-filter:blur(6px);transition:all .18s
+}
+.modal-close:hover{background:var(--coral);border-color:transparent}
+
+/* ── PLAYER CONTROLS BAR — below the video, inside modal-body ── */
+#modal-player-controls{
+  display:none;flex-direction:column;gap:8px;
+  padding:12px 0 4px;
+  border-top:1px solid var(--border)
+}
+#modal-player-controls.visible{display:flex}
+
+/* Episode row */
+#modal-ep-wrap{
+  display:none;align-items:center;gap:6px;flex-wrap:wrap
+}
+#modal-ep-wrap.show{display:flex}
+#modal-ep-wrap select{
+  background:var(--surface3);border:1px solid var(--border2);color:var(--txt);
+  font-size:12px;font-weight:600;cursor:pointer;font-family:var(--font);
+  padding:4px 10px;border-radius:20px;min-height:30px
+}
+#modal-ep-wrap select:focus{outline:none}
+.ctrl-sep{display:none}
+
+/* Sources row label */
+.source-row-label{
+  font-size:9px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;
+  color:var(--txt3)
+}
+
+/* Source buttons grid */
+#source-btns{
+  display:flex;gap:5px;flex-wrap:wrap;align-items:center
+}
+.source-btn{
+  display:inline-flex;align-items:center;gap:3px;
+  background:var(--surface2);border:1px solid var(--border2);
+  color:var(--txt2);font-size:10px;font-weight:700;
+  padding:4px 10px;border-radius:20px;
+  cursor:pointer;transition:all .15s;font-family:var(--font);
+  letter-spacing:.2px;white-space:nowrap;min-height:28px
+}
+.source-btn:hover{background:var(--surface3);color:var(--txt);border-color:var(--border2)}
+.source-btn.active{background:var(--p);color:white;border-color:var(--p);box-shadow:0 2px 12px var(--p-glow)}
+.source-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+
+/* Lang status pill */
+#lang-status-chip{
+  display:inline-flex;align-items:center;gap:4px;
+  font-size:10px;font-weight:700;padding:3px 10px;border-radius:20px;
+  flex-shrink:0
+}
+
+/* Modal hero overlay content */
+.modal-hero-content{position:absolute;inset:0;z-index:2;display:flex;align-items:flex-end;padding:20px 24px;transition:opacity .3s}
+
+/* Modal body */
+.modal-body{padding:18px 24px 24px}
+.modal-title{font-size:clamp(18px,3.5vw,34px);font-weight:900;letter-spacing:-1px;margin-bottom:8px;line-height:1;color:var(--white)}
+.modal-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:10px}
+.chip{padding:3px 10px;border-radius:40px;font-size:9px;font-weight:700;letter-spacing:.4px;text-transform:uppercase}
+.chip-year{background:rgba(98,70,234,.14);color:var(--p-ll);border:1px solid rgba(98,70,234,.28)}
+.chip-type{background:rgba(0,229,176,.09);color:var(--neon);border:1px solid rgba(0,229,176,.22)}
+.chip-genre{background:rgba(255,94,106,.09);color:var(--coral);border:1px solid rgba(255,94,106,.18)}
+.chip-rating{background:rgba(245,200,66,.11);color:var(--gold);border:1px solid rgba(245,200,66,.22)}
+.chip-runtime{background:rgba(255,255,255,.05);color:var(--txt2);border:1px solid var(--border2)}
+.modal-plot{font-size:var(--fs-sm);font-weight:300;line-height:1.72;color:var(--txt2);margin-bottom:18px;max-width:680px}
+.modal-actions{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+
+/* ══════════════════════════════════════
+   TOAST
+   ══════════════════════════════════════ */
+#toast{
+  position:fixed;bottom:calc(22px + var(--sab));left:50%;
+  transform:translateX(-50%) translateY(100px);
+  background:var(--surface2);border:1px solid var(--border2);border-radius:40px;
+  padding:10px 18px;font-size:11px;font-weight:600;z-index:9999;
+  pointer-events:none;white-space:nowrap;transition:transform .32s var(--bounce);
+  backdrop-filter:blur(18px);box-shadow:0 8px 36px rgba(0,0,0,.5)
+}
+#toast.show{transform:translateX(-50%) translateY(0)}
+#toast.success{border-color:rgba(0,229,176,.38);color:var(--neon)}
+#toast.error{border-color:rgba(255,94,106,.38);color:var(--coral)}
+#toast.info{border-color:rgba(98,70,234,.38);color:var(--p-ll)}
+
+/* ══════════════════════════════════════
+   DETECT BANNERS
+   ══════════════════════════════════════ */
+#detect-banners{
+  position:fixed;bottom:calc(20px + var(--sab));right:max(20px,var(--sar));
+  z-index:800;display:flex;flex-direction:column;gap:8px;max-width:320px
+}
+.detect-banner{
+  background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r2);
+  padding:12px 14px;display:flex;align-items:flex-start;gap:10px;
+  box-shadow:0 8px 32px rgba(0,0,0,.5);animation:slideUp .35s var(--ease);position:relative
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.detect-banner.warn{border-color:rgba(245,200,66,.28);background:rgba(245,200,66,.05)}
+.detect-banner.info{border-color:rgba(98,70,234,.28);background:rgba(98,70,234,.05)}
+.detect-banner.ok{border-color:rgba(0,229,176,.28);background:rgba(0,229,176,.05)}
+.detect-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.detect-body{flex:1;min-width:0}
+.detect-title{font-size:11px;font-weight:700;color:var(--txt);margin-bottom:2px}
+.detect-sub{font-size:10px;color:var(--txt2);line-height:1.4}
+.detect-close{position:absolute;top:8px;right:9px;width:17px;height:17px;border-radius:50%;background:var(--surface3);color:var(--txt3);font-size:10px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s}
+.detect-close:hover{background:var(--coral);color:white}
+
+/* ══════════════════════════════════════
+   POPUPS
+   ══════════════════════════════════════ */
+.popup-overlay{
+  position:fixed;inset:0;z-index:1100;display:none;
+  align-items:center;justify-content:center;padding:14px;
+  background:rgba(4,4,12,.9);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px)
+}
+.popup-overlay.open{display:flex;animation:fadeIn .2s}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+.popup-box{
+  background:var(--surface);border:1px solid var(--border2);border-radius:var(--r3);
+  padding:30px;max-width:400px;width:100%;position:relative;
+  animation:modalIn .28s var(--bounce);box-shadow:0 36px 96px rgba(0,0,0,.8);
+  max-height:90dvh;overflow-y:auto
+}
+.popup-close{
+  position:absolute;top:12px;right:12px;width:27px;height:27px;border-radius:50%;
+  background:var(--surface2);border:1px solid var(--border2);color:var(--txt2);
+  font-size:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .18s
+}
+.popup-close:hover{background:var(--coral);color:white;border-color:transparent}
+.cs-emoji{font-size:40px;margin-bottom:10px}
+.cs-label{font-size:19px;font-weight:800;letter-spacing:-.4px;margin-bottom:4px}
+.cs-sub{color:var(--txt2);font-size:12px;font-weight:300;line-height:1.5}
+.popup-divider{height:1px;background:var(--border);margin:16px 0}
+
+/* ══════════════════════════════════════
+   LOADER
+   ══════════════════════════════════════ */
+#loader{position:fixed;inset:0;z-index:9999;background:var(--bg);display:flex;align-items:center;justify-content:center;transition:opacity .55s}
+#loader.hidden{opacity:0;pointer-events:none}
+.loader-bar{width:140px;height:2px;background:var(--surface3);border-radius:2px;overflow:hidden;margin-top:16px}
+.loader-fill{height:100%;background:var(--p);animation:loadBar 2.2s var(--ease) forwards}
+@keyframes loadBar{0%{width:0}70%{width:80%}100%{width:100%}}
+
+/* ══════════════════════════════════════
+   WISHLIST / LEGAL / FOOTER
+   ══════════════════════════════════════ */
+.wl-empty{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:70px 20px;text-align:center;gap:11px}
+.wl-empty-icon{font-size:48px;opacity:.3}
+.wl-empty-title{font-size:17px;font-weight:700;color:var(--txt2)}
+.wl-empty-sub{color:var(--txt3);font-size:12px;max-width:260px}
+.wl-clear-btn{display:flex;align-items:center;gap:4px;padding:5px 12px;border-radius:40px;background:rgba(255,94,106,.1);border:1px solid rgba(255,94,106,.22);color:var(--coral);font-size:10px;font-weight:600;cursor:pointer;transition:all .18s;font-family:var(--font);min-height:32px}
+.wl-clear-btn:hover{background:rgba(255,94,106,.2)}
+.legal-page{max-width:680px;margin:0 auto;padding:30px 18px calc(60px + var(--sab))}
+.legal-title{font-size:clamp(22px,4.5vw,38px);font-weight:900;letter-spacing:-1.2px;margin-bottom:9px}
+.legal-intro{color:var(--txt2);font-size:var(--fs-base);line-height:1.68;font-weight:300;margin-bottom:22px}
+.legal-section{margin-bottom:22px}
+.legal-section h3{font-size:var(--fs-base);font-weight:700;margin-bottom:7px;color:var(--p-ll)}
+.legal-section p{color:var(--txt2);font-size:var(--fs-sm);line-height:1.72;font-weight:300;margin-bottom:6px}
+.legal-tabs{display:flex;gap:3px;background:var(--surface2);border:1px solid var(--border);border-radius:40px;padding:3px;width:fit-content;margin-bottom:22px}
+.legal-tab{padding:5px 14px;border-radius:40px;font-size:11px;font-weight:500;color:var(--txt2);cursor:pointer;transition:all .18s;min-height:30px}
+.legal-tab.active,.legal-tab:hover{background:var(--p);color:white}
+.no-results{color:var(--txt3);padding:44px;text-align:center;grid-column:1/-1;font-size:var(--fs-sm)}
+
+footer{border-top:1px solid var(--border);padding:28px var(--sp-xl) calc(20px + var(--sab));margin-top:52px}
+.footer-top{display:grid;grid-template-columns:1fr auto 1fr;gap:20px;align-items:start;margin-bottom:20px}
+.footer-logo{font-size:15px;font-weight:900;letter-spacing:-.5px;color:var(--white);margin-bottom:4px}
+.footer-tagline{font-size:10px;color:var(--txt3);font-weight:300}
+.footer-nav-col{display:flex;flex-direction:column;gap:6px;align-items:center}
+.footer-link{font-size:10px;color:var(--txt3);cursor:pointer;transition:color .18s;min-height:28px;display:flex;align-items:center}
+.footer-link:hover{color:var(--p-ll)}
+.footer-right-col{display:flex;flex-direction:column;align-items:flex-end;gap:8px}
+.footer-gh{display:flex;align-items:center;gap:4px;font-size:10px;color:var(--txt3);transition:color .18s}
+.footer-gh:hover{color:var(--p-ll)}
+.footer-gh svg{width:12px;height:12px;fill:currentColor}
+.footer-bottom{border-top:1px solid var(--border);padding-top:16px;display:flex;flex-direction:column;gap:4px;align-items:center;text-align:center}
+.footer-copy{color:var(--txt3);font-size:10px}
+.footer-disc{color:var(--txt3);font-size:9px;max-width:500px;line-height:1.5}
+.footer-disc a{color:var(--p-ll);cursor:pointer}
+
+/* ══════════════════════════════════════
+   SEARCH DROPDOWN
+   ══════════════════════════════════════ */
+#search-dropdown{
+  position:fixed;top:calc(var(--topbar-h) + var(--sat) + 4px);
+  left:calc(var(--sidebar-w) + max(20px,var(--sal)));
+  width:460px;max-width:calc(100vw - var(--sidebar-w) - 36px);
+  background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r2);
+  overflow:hidden;display:none;z-index:1000;max-height:400px;overflow-y:auto;
+  box-shadow:0 20px 64px rgba(0,0,0,.8);overscroll-behavior:contain
+}
+#search-dropdown.open{display:block;animation:dropIn .18s var(--ease)}
+@keyframes dropIn{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+
+/* ══════════════════════════════════════
+   MAINTENANCE
+   ══════════════════════════════════════ */
+#maintenance-screen{display:none;position:fixed;inset:0;z-index:9999;background:var(--bg);align-items:center;justify-content:center;flex-direction:column;gap:16px;text-align:center;padding:20px}
+#maintenance-screen.visible{display:flex}
+
+/* ══════════════════════════════════════
+   BOTTOM NAV — Mobile only
+   ══════════════════════════════════════ */
+#bottom-nav{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:200;
+  background:rgba(8,8,15,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-top:1px solid var(--border2);
+  padding:8px 0 calc(8px + var(--sab));
+  grid-template-columns:repeat(5,1fr)
+}
+.bnav-item{
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  padding:4px 2px;cursor:pointer;transition:all .15s;min-height:44px;
+  justify-content:center;color:var(--txt3);border:none;background:none;
+  font-family:var(--font);width:100%
+}
+.bnav-item svg{width:20px;height:20px;transition:color .15s}
+.bnav-item span{font-size:9px;font-weight:600;letter-spacing:.2px}
+.bnav-item.active,.bnav-item:hover{color:var(--p-ll)}
+.bnav-item.active svg{filter:drop-shadow(0 0 6px var(--p-glow))}
+.bnav-wl-dot{
+  position:absolute;top:4px;right:calc(50% - 14px);
+  width:6px;height:6px;border-radius:50%;background:var(--p);
+  display:none
+}
+.bnav-item{position:relative}
+
+/* ══════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+   ══════════════════════════════════════ */
+
+/* ── Tablet portrait: 768–1023px ── */
+@media(max-width:1023px){
+  :root{--sidebar-w:0px}
+  #sidebar{transform:translateX(-240px);width:240px;z-index:250}
+  #sidebar.open{transform:translateX(0)}
+  #main{margin-left:0}
+  .hamburger{display:flex}
+  .topbar-lang-btn{display:flex}
+  #topbar{padding-left:max(16px,var(--sal));padding-right:max(14px,var(--sar))}
+  .hero-content{padding-left:var(--sp-lg);padding-right:var(--sp-lg)}
+  .hero-indicators{right:var(--sp-lg)}
+  .section{padding-left:var(--sp-lg);padding-right:var(--sp-lg)}
+  .genre-filters{padding-left:var(--sp-lg);padding-right:var(--sp-lg)}
+  .page-title-bar{padding-left:var(--sp-lg);padding-right:var(--sp-lg)}
+  footer{padding-left:var(--sp-lg);padding-right:var(--sp-lg)}
+  .footer-top{grid-template-columns:1fr;gap:12px}
+  .footer-right-col{align-items:flex-start}
+  #search-dropdown{left:max(14px,var(--sal));width:calc(100vw - 28px);max-width:none}
+}
+
+/* ── Mobile + bottom nav: <768px ── */
+@media(max-width:767px){
+  :root{--topbar-h:52px}
+  #bottom-nav{display:grid}
+  /* Push content above bottom nav */
+  #app{padding-bottom:calc(68px + var(--sab))}
+  #detail-modal{padding-bottom:calc(68px + var(--sab))}
+  .detect-banners{bottom:calc(76px + var(--sab))}
+  #toast{bottom:calc(76px + var(--sab))}
+  .hero-content{padding:0 var(--sp-md) calc(56px + var(--sab))}
+  .hero-indicators{right:var(--sp-md)}
+  #hero{min-height:420px;height:82vh}
+  .section{padding:0 var(--sp-md)}
+  .genre-filters{padding:0 var(--sp-md)}
+  .page-title-bar{padding:0 var(--sp-md) 12px}
+  footer{padding:20px var(--sp-md) calc(14px + var(--sab))}
+  .cards-grid{grid-template-columns:repeat(2,1fr);gap:9px}
+  .scroll-row .card{flex:0 0 130px}
+  .modal-container{margin:0 0 0;padding:0 0 calc(60px + var(--sab))}
+  .modal-card{border-radius:0;border-left:none;border-right:none}
+  .modal-body{padding:14px 14px 20px}
+  .modal-hero{aspect-ratio:16/10}
+  .section-title{font-size:17px}
+  .topbar-title{font-size:15px}
+  /* Hide sidebar search on very small */
+  .sidebar-search{display:block}
+}
+
+/* ── Mobile portrait narrow: <480px ── */
+@media(max-width:479px){
+  :root{--sp-xl:14px;--sp-lg:14px}
+  .hero-title{letter-spacing:-1.2px}
+  .hero-actions{gap:7px}
+  .btn-hero-play,.btn-hero-info{padding:10px 18px;font-size:13px}
+  .cards-grid{gap:8px}
+  .scroll-row .card{flex:0 0 120px}
+  /* modal-player-controls is now vertical — no max-width needed */
+}
+
+/* ── Large desktop: 1440px+ ── */
+@media(min-width:1440px){
+  :root{--sidebar-w:260px}
+  .cards-grid{grid-template-columns:repeat(auto-fill,minmax(185px,1fr));gap:16px}
+  .scroll-row .card{flex:0 0 190px}
+  .section{padding:0 48px}
+  .genre-filters{padding:0 48px}
+  .page-title-bar{padding:0 48px 20px}
+  footer{padding:34px 48px calc(24px + var(--sab))}
+}
+
+/* ── 4K / Smart TV: 1920px+ ── */
+@media(min-width:1920px){
+  :root{--sidebar-w:300px;--topbar-h:72px;--fs-base:16px}
+  .cards-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:20px}
+  .scroll-row .card{flex:0 0 220px}
+  .section{padding:0 60px}
+  .genre-filters{padding:0 60px}
+  .page-title-bar{padding:0 60px 24px}
+  footer{padding:40px 60px calc(28px + var(--sab))}
+  .hero-content{padding:0 72px calc(80px + var(--sab))}
+  #hero{max-height:1100px}
+  .modal-container{max-width:1100px}
+}
+
+/* ── TV: pointer:coarse + big screen (smart TV / game console) ── */
+@media(min-width:1280px) and (pointer:coarse){
+  .card:hover{transform:none}
+  .btn-hero-play,.btn-hero-info{font-size:18px;padding:14px 32px}
+}
+
+/* ── Landscape mobile: fix hero height ── */
+@media(max-height:500px) and (orientation:landscape){
+  #hero{height:100vw;min-height:280px;max-height:380px}
+  .hero-content{padding-bottom:var(--sp-lg)}
+  #bottom-nav{display:none}
+  #app{padding-bottom:0}
+}
+
+/* ── Reduce motion ── */
+@media(prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms!important;transition-duration:.01ms!important}
+  .hero-dot{animation:none}
+  .card{animation:none}
+}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(.84)}}
+@keyframes spin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+/* Searching pulse on play btn */
+.modal-hero-play-btn.loading{animation:pulse 1s ease-in-out infinite}
+</style>
+</head>
+<body>
+
+<div id="maintenance-screen">
+  <div style="font-size:40px;margin-bottom:12px">⚙️</div>
+  <div style="font-size:24px;font-weight:900;letter-spacing:-.8px;margin-bottom:6px" data-i18n="maint_title">Maintenance</div>
+  <div style="color:var(--txt2);font-size:12px;font-weight:300;max-width:320px" data-i18n="maint_sub">Updating. Back shortly.</div>
+</div>
+
+<div id="loader">
+  <div style="display:flex;flex-direction:column;align-items:center">
+    <div style="display:flex;align-items:center;gap:9px;font-size:18px;font-weight:900;letter-spacing:-.8px">
+      <div style="width:34px;height:34px;background:var(--p);border-radius:8px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px var(--p-glow)">
+        <svg viewBox="0 0 24 24" fill="white" style="width:17px;height:17px"><polygon points="6,4 20,12 6,20"/></svg>
+      </div>
+      StreamVault
+    </div>
+    <div class="loader-bar"><div class="loader-fill"></div></div>
+  </div>
+</div>
+
+<div id="toast"></div>
+<div id="detect-banners"></div>
+
+<!-- POPUPS -->
+<!-- Auth handled server-side: /login and /register -->
+<div id="_svUser" style="display:none">{{USER_JSON}}</div>
+
+<!-- SIDEBAR OVERLAY -->
+<div id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<!-- SIDEBAR -->
+<aside id="sidebar">
+  <div class="sidebar-logo" onclick="navigate('home')">
+    <div class="sidebar-logo-icon"><svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg></div>
+    <span class="sidebar-logo-text">StreamVault</span>
+  </div>
+  <div class="sidebar-search">
+    <div class="sidebar-search-wrap">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input id="search-input" type="text" placeholder="Cerca…" autocomplete="off" inputmode="search" enterkeyhint="search">
+    </div>
+  </div>
+  <nav class="sidebar-nav">
+    <div class="sidebar-section-label">Menu</div>
+    <div class="sidebar-link active" data-page="home" title="Home" onclick="navigate('home')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      <span class="sidebar-link-label" data-i18n="nav_home">Home</span>
+    </div>
+    <div class="sidebar-link" data-page="movies" title="Movies" onclick="navigate('movies')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+      <span class="sidebar-link-label" data-i18n="tab_movies">Movies</span>
+    </div>
+    <div class="sidebar-link" data-page="shows" title="Series" onclick="navigate('shows')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+      <span class="sidebar-link-label" data-i18n="tab_shows">Series</span>
+    </div>
+    <div class="sidebar-link" data-page="trending" title="Trending" onclick="navigate('trending')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      <span class="sidebar-link-label" data-i18n="nav_trending">Trending</span>
+    </div>
+    <div class="sidebar-link" data-page="wishlist" title="Wishlist" onclick="navigate('wishlist')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+      <span class="sidebar-link-label" data-i18n="tab_wishlist">Wishlist</span>
+      <span id="sidebar-wl-badge" class="sidebar-wl-badge">0</span>
+    </div>
+    <div class="sidebar-divider"></div>
+    <div class="sidebar-section-label">Legal</div>
+    <div class="sidebar-link" data-page="tos" title="Terms" onclick="navigate('tos')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+      <span class="sidebar-link-label" data-i18n="nav_tos">Terms</span>
+    </div>
+  </nav>
+  <div class="sidebar-lang-section">
+    <span class="sidebar-lang-label">Language / Country</span>
+    <div class="sidebar-lang-grid" id="sidebar-lang-grid">
+      <button class="sidebar-lang-btn" data-lang="it" onclick="setLanguage('it')"><span class="sidebar-lang-flag">🇮🇹</span><span class="sidebar-lang-code">IT</span></button>
+      <button class="sidebar-lang-btn" data-lang="en" onclick="setLanguage('en')"><span class="sidebar-lang-flag">🇺🇸</span><span class="sidebar-lang-code">EN</span></button>
+      <button class="sidebar-lang-btn" data-lang="es" onclick="setLanguage('es')"><span class="sidebar-lang-flag">🇪🇸</span><span class="sidebar-lang-code">ES</span></button>
+      <button class="sidebar-lang-btn" data-lang="fr" onclick="setLanguage('fr')"><span class="sidebar-lang-flag">🇫🇷</span><span class="sidebar-lang-code">FR</span></button>
+      <button class="sidebar-lang-btn" data-lang="de" onclick="setLanguage('de')"><span class="sidebar-lang-flag">🇩🇪</span><span class="sidebar-lang-code">DE</span></button>
+      <button class="sidebar-lang-btn" data-lang="pt" onclick="setLanguage('pt')"><span class="sidebar-lang-flag">🇧🇷</span><span class="sidebar-lang-code">PT</span></button>
+      <button class="sidebar-lang-btn" data-lang="ja" onclick="setLanguage('ja')"><span class="sidebar-lang-flag">🇯🇵</span><span class="sidebar-lang-code">JA</span></button>
+      <button class="sidebar-lang-btn" data-lang="zh" onclick="setLanguage('zh')"><span class="sidebar-lang-flag">🇨🇳</span><span class="sidebar-lang-code">ZH</span></button>
+      <button class="sidebar-lang-btn" data-lang="ko" onclick="setLanguage('ko')"><span class="sidebar-lang-flag">🇰🇷</span><span class="sidebar-lang-code">KO</span></button>
+      <button class="sidebar-lang-btn" data-lang="ru" onclick="setLanguage('ru')"><span class="sidebar-lang-flag">🇷🇺</span><span class="sidebar-lang-code">RU</span></button>
+      <button class="sidebar-lang-btn" data-lang="ar" onclick="setLanguage('ar')"><span class="sidebar-lang-flag">🇸🇦</span><span class="sidebar-lang-code">AR</span></button>
+      <button class="sidebar-lang-btn" data-lang="hi" onclick="setLanguage('hi')"><span class="sidebar-lang-flag">🇮🇳</span><span class="sidebar-lang-code">HI</span></button>
+    </div>
+  </div>
+  <div class="sidebar-bottom">
+    <div id="sb-auth-btns"></div>
+  </div>
+</aside>
+
+<!-- MAIN -->
+<div id="main">
+  <header id="topbar">
+    <button class="hamburger" onclick="openSidebar()" aria-label="Menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="topbar-title" id="topbar-title">StreamVault</div>
+    <div class="topbar-right">
+      <button class="topbar-lang-btn" id="topbar-lang-btn" onclick="openSidebar()" aria-label="Language">
+        <span class="topbar-lang-flag" id="topbar-lang-flag">🇮🇹</span>
+        <span class="topbar-lang-code" id="topbar-lang-code">IT</span>
+      </button>
+      <button class="topbar-icon-btn" onclick="navigate('wishlist')" title="Wishlist" aria-label="Wishlist">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+        <span class="topbar-wl-badge" id="wl-count">0</span>
+      </button>
+    </div>
+  </header>
+
+  <div id="search-dropdown"></div>
+
+  <div id="app">
+    <!-- HOME -->
+    <div id="page-home" class="page-view active" style="padding-top:0">
+      <section id="hero">
+        <div id="hero-bg"></div>
+        <div class="hero-content">
+          <div class="hero-badge"><div class="hero-dot"></div><span data-i18n="hero_badge">Featured Today</span></div>
+          <h1 class="hero-title" id="hero-title">Loading…</h1>
+          <div class="hero-meta" id="hero-meta"></div>
+          <p class="hero-desc" id="hero-desc"></p>
+          <div class="hero-actions">
+            <button class="btn-hero-play" onclick="heroPlay()">
+              <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+              <span data-i18n="watch_now">Watch Now</span>
+            </button>
+            <button class="btn-hero-info" onclick="heroInfo()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+              <span data-i18n="more_info">More Info</span>
+            </button>
+          </div>
+        </div>
+        <div class="hero-indicators" id="hero-indicators"></div>
+      </section>
+      <div style="margin-top:40px"></div>
+      <section class="section">
+        <div class="section-hd">
+          <div class="section-title" data-i18n="trending">🔥 Trending</div>
+          <span class="section-more" onclick="navigate('trending')"><span data-i18n="see_all">See all</span> →</span>
+        </div>
+        <div id="trending-row" class="scroll-row">
+          <div class="skeleton" style="flex:0 0 160px;aspect-ratio:2/3"></div>
+          <div class="skeleton" style="flex:0 0 160px;aspect-ratio:2/3"></div>
+          <div class="skeleton" style="flex:0 0 160px;aspect-ratio:2/3"></div>
+          <div class="skeleton" style="flex:0 0 160px;aspect-ratio:2/3"></div>
+          <div class="skeleton" style="flex:0 0 160px;aspect-ratio:2/3"></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-hd">
+          <div class="section-title" data-i18n="popular_movies">🎬 Popular Movies</div>
+          <span class="section-more" onclick="navigate('movies')"><span data-i18n="see_all">See all</span> →</span>
+        </div>
+        <div id="movies-grid" class="cards-grid">
+          <div class="skeleton skel-poster"></div><div class="skeleton skel-poster"></div>
+          <div class="skeleton skel-poster"></div><div class="skeleton skel-poster"></div>
+          <div class="skeleton skel-poster"></div><div class="skeleton skel-poster"></div>
+        </div>
+      </section>
+      <section class="section">
+        <div class="section-hd">
+          <div class="section-title" data-i18n="popular_shows">📺 Popular Series</div>
+          <span class="section-more" onclick="navigate('shows')"><span data-i18n="see_all">See all</span> →</span>
+        </div>
+        <div id="shows-grid" class="cards-grid">
+          <div class="skeleton skel-poster"></div><div class="skeleton skel-poster"></div>
+          <div class="skeleton skel-poster"></div><div class="skeleton skel-poster"></div>
+          <div class="skeleton skel-poster"></div><div class="skeleton skel-poster"></div>
+        </div>
+      </section>
+    </div>
+
+    <!-- MOVIES -->
+    <div id="page-movies" class="page-view">
+      <div class="page-title-bar"><h1 class="page-title" data-i18n="tab_movies">Movies</h1></div>
+      <div class="genre-filters" id="movie-genre-filters"></div>
+      <div class="section" style="margin-bottom:0"><div id="movies-browse-grid" class="cards-grid"></div></div>
+      <div class="load-more-wrap"><button class="btn-ghost" onclick="loadMoreMovies()" data-i18n="load_more">Load More</button></div>
+    </div>
+
+    <!-- SHOWS -->
+    <div id="page-shows" class="page-view">
+      <div class="page-title-bar"><h1 class="page-title" data-i18n="tab_shows">Series</h1></div>
+      <div class="genre-filters" id="show-genre-filters"></div>
+      <div class="section" style="margin-bottom:0"><div id="shows-browse-grid" class="cards-grid"></div></div>
+      <div class="load-more-wrap"><button class="btn-ghost" onclick="loadMoreShows()" data-i18n="load_more">Load More</button></div>
+    </div>
+
+    <!-- TRENDING -->
+    <div id="page-trending" class="page-view">
+      <div class="page-title-bar"><h1 class="page-title" data-i18n="nav_trending">Trending</h1></div>
+      <div class="section" style="margin-bottom:0"><div id="trending-grid" class="cards-grid"></div></div>
+    </div>
+
+    <!-- WISHLIST -->
+    <div id="page-wishlist" class="page-view">
+      <div class="page-title-bar">
+        <h1 class="page-title" data-i18n="tab_wishlist">Wishlist</h1>
+        <button class="wl-clear-btn" id="wl-clear-btn" onclick="clearWishlist()" style="display:none">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:11px;height:11px"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
+          <span data-i18n="wl_clear">Clear All</span>
+        </button>
+      </div>
+      <div class="section" style="margin-bottom:0"><div id="wishlist-grid" class="cards-grid"></div></div>
+      <div id="wishlist-empty" class="wl-empty" style="display:none">
+        <div class="wl-empty-icon">🎬</div>
+        <div class="wl-empty-title" data-i18n="wl_empty_title">Your wishlist is empty</div>
+        <p class="wl-empty-sub" data-i18n="wl_empty_sub">Tap ♡ on any title to save it here.</p>
+      </div>
+    </div>
+
+    <!-- LEGAL -->
+    <div id="page-tos" class="page-view"><div class="legal-page">
+      <div class="legal-tabs"><div class="legal-tab active" onclick="navigate('tos')">Terms</div><div class="legal-tab" onclick="navigate('privacy')">Privacy</div><div class="legal-tab" onclick="navigate('dmca')">DMCA</div></div>
+      <div class="legal-title">Terms of Service</div><p class="legal-intro">StreamVault is a metadata aggregator. We do not host any video content.</p>
+      <div class="legal-section"><h3>No Liability</h3><p>StreamVault aggregates publicly available metadata. We hold no responsibility for third-party content or links.</p></div>
+    </div></div>
+    <div id="page-privacy" class="page-view"><div class="legal-page">
+      <div class="legal-tabs"><div class="legal-tab" onclick="navigate('tos')">Terms</div><div class="legal-tab active" onclick="navigate('privacy')">Privacy</div><div class="legal-tab" onclick="navigate('dmca')">DMCA</div></div>
+      <div class="legal-title">Privacy Policy</div><p class="legal-intro">We respect your privacy. No personal data is stored on our servers.</p>
+      <div class="legal-section"><h3>Local Storage</h3><p>Wishlist and preferences are stored locally in your browser only.</p></div>
+    </div></div>
+    <div id="page-dmca" class="page-view"><div class="legal-page">
+      <div class="legal-tabs"><div class="legal-tab" onclick="navigate('tos')">Terms</div><div class="legal-tab" onclick="navigate('privacy')">Privacy</div><div class="legal-tab active" onclick="navigate('dmca')">DMCA</div></div>
+      <div class="legal-title">DMCA</div><p class="legal-intro">StreamVault does not host any content. We only display metadata from TMDB.</p>
+      <div class="legal-section"><h3>Takedown Requests</h3><p>Contact us for any removal request. We will act within 48 hours.</p></div>
+    </div></div>
+
+    <footer>
+      <div class="footer-top">
+        <div><div class="footer-logo">StreamVault</div><div class="footer-tagline">Powered by TMDB</div></div>
+        <div class="footer-nav-col">
+          <a class="footer-link" onclick="navigate('home')" data-i18n="nav_home">Home</a>
+          <a class="footer-link" onclick="navigate('movies')" data-i18n="tab_movies">Movies</a>
+          <a class="footer-link" onclick="navigate('shows')" data-i18n="tab_shows">Series</a>
+          <a class="footer-link" onclick="navigate('trending')" data-i18n="nav_trending">Trending</a>
+          <a class="footer-link" onclick="navigate('tos')">Terms</a>
+          <a class="footer-link" onclick="navigate('privacy')">Privacy</a>
+          <a class="footer-link" onclick="navigate('dmca')">DMCA</a>
+        </div>
+        <div class="footer-right-col">
+          <a class="footer-gh" href="https://github.com/BinaryCodee" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/></svg>
+            BinaryCodee
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <div class="footer-copy">© 2025 StreamVault · TMDB</div>
+        <div class="footer-disc">StreamVault is a metadata catalog only. We do not host, stream, or distribute any video content. <a onclick="navigate('tos')">Terms</a> · <a onclick="navigate('privacy')">Privacy</a> · <a onclick="navigate('dmca')">DMCA</a></div>
+      </div>
+    </footer>
+  </div><!-- /#app -->
+</div><!-- /#main -->
+
+<!-- BOTTOM NAV (mobile only, shown via CSS) -->
+<nav id="bottom-nav" aria-label="Main navigation">
+  <button class="bnav-item active" data-page="home" onclick="navigate('home')" aria-label="Home">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    <span data-i18n="nav_home">Home</span>
+  </button>
+  <button class="bnav-item" data-page="movies" onclick="navigate('movies')" aria-label="Movies">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/></svg>
+    <span data-i18n="tab_movies">Movies</span>
+  </button>
+  <button class="bnav-item" data-page="shows" onclick="navigate('shows')" aria-label="Series">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="15" rx="2"/><polyline points="17 2 12 7 7 2"/></svg>
+    <span data-i18n="tab_shows">Series</span>
+  </button>
+  <button class="bnav-item" data-page="trending" onclick="navigate('trending')" aria-label="Trending">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    <span data-i18n="nav_trending">Trending</span>
+  </button>
+  <button class="bnav-item" data-page="wishlist" onclick="navigate('wishlist')" aria-label="Wishlist">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+    <span data-i18n="tab_wishlist">Wishlist</span>
+    <div class="bnav-wl-dot" id="bnav-wl-dot"></div>
+  </button>
+</nav>
+
+<!-- DETAIL MODAL -->
+<div id="detail-modal" role="dialog" aria-modal="true">
+  <div class="modal-backdrop" onclick="closeModal()"></div>
+  <div class="modal-container">
+    <div class="modal-card">
+
+      <!-- ── VIDEO HERO ── -->
+      <div class="modal-hero" id="modal-hero">
+        <img id="modal-hero-img" class="modal-hero-img" src="" alt="" loading="lazy">
+        <iframe id="modal-hero-player"
+          allowfullscreen
+          allow="autoplay; fullscreen; encrypted-media; picture-in-picture; web-share; clipboard-write"
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+        <!-- Play button (shown when NOT playing) -->
+        <button class="modal-hero-play-btn" id="modal-play-btn" onclick="modalStartPlayer()" aria-label="Play">
+          <svg viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+        </button>
+        <!-- Stop/close button (shown ONLY when playing — replaces ✕) -->
+        <button class="modal-hero-stop-btn" onclick="modalStopPlayer()" aria-label="Stop player">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:14px;height:14px"><rect x="6" y="6" width="12" height="12" rx="2"/></svg>
+        </button>
+        <!-- Close modal (shown when NOT playing) -->
+        <button class="modal-close" onclick="closeModal()" aria-label="Close">✕</button>
+        <div class="modal-hero-content" id="modal-hero-content"></div>
+      </div>
+
+      <!-- ── MODAL BODY ── -->
+      <div class="modal-body">
+        <h2 class="modal-title" id="modal-title"></h2>
+        <div class="modal-chips" id="modal-chips"></div>
+        <p class="modal-plot" id="modal-plot"></p>
+        <div class="modal-actions" id="modal-actions"></div>
+
+        <!-- ── PLAYER CONTROLS (below video, inside body) ── -->
+        <div id="modal-player-controls">
+          <!-- Episode selector (TV only) -->
+          <div id="modal-ep-wrap">
+            <select id="modal-season-sel" onchange="modalSeasonChange()"></select>
+            <select id="modal-ep-sel" onchange="modalEpChange()"></select>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── RANKS POPUP ── -->
+<div id="popup-ranks" class="popup-overlay" role="dialog" aria-modal="true">
+  <div class="popup-box" style="max-width:700px;width:95vw;padding:28px 24px 24px">
+    <button class="popup-close" onclick="closePopup('popup-ranks')" aria-label="Close">✕</button>
+    <div style="text-align:center;margin-bottom:22px">
+      <div style="font-size:22px;font-weight:900;color:var(--white);letter-spacing:-.5px;margin-bottom:4px">🔒 Sblocca il Full HD 1080p</div>
+      <div style="font-size:13px;color:var(--txt2);font-weight:400">Passa a un piano superiore per guardare in qualità massima</div>
+    </div>
+    <!-- Plans grid -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px">
+
+      <!-- Basic -->
+      <div style="border:1px solid rgba(98,70,234,.35);border-radius:16px;padding:18px 16px;background:rgba(98,70,234,.07);position:relative;opacity:.72">
+        <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:#9B8BFF;text-transform:uppercase;margin-bottom:8px">⚡ Basic</div>
+        <div style="font-size:26px;font-weight:900;color:var(--white);line-height:1">Gratis</div>
+        <div style="font-size:10px;color:var(--txt3);margin-bottom:14px">piano attuale</div>
+        <div class="popup-divider" style="margin:10px 0"></div>
+        <ul style="list-style:none;padding:0;margin:0;font-size:11px;color:var(--txt2);line-height:2;font-weight:500">
+          <li>✅ Streaming standard</li>
+          <li>✅ Fino a 720p</li>
+          <li>✅ 2 schermi simultanei</li>
+          <li>❌ <span style="text-decoration:line-through;opacity:.5">Full HD 1080p</span></li>
+          <li>❌ <span style="text-decoration:line-through;opacity:.5">Download</span></li>
+        </ul>
+      </div>
+
+      <!-- Medium -->
+      <div style="border:1.5px solid rgba(0,196,255,.5);border-radius:16px;padding:18px 16px;background:rgba(0,196,255,.07);position:relative">
+        <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:#00C4FF;text-transform:uppercase;margin-bottom:8px">💎 Medium</div>
+        <div style="font-size:26px;font-weight:900;color:var(--white);line-height:1">€4,99<span style="font-size:12px;font-weight:400;color:var(--txt3)">/mese</span></div>
+        <div style="font-size:10px;color:var(--txt3);margin-bottom:14px">o €39,99/anno</div>
+        <div class="popup-divider" style="margin:10px 0"></div>
+        <ul style="list-style:none;padding:0;margin:0;font-size:11px;color:var(--txt2);line-height:2;font-weight:500">
+          <li>✅ Streaming HD</li>
+          <li>✅ <strong style="color:#00C4FF">Full HD 1080p</strong> ✨</li>
+          <li>✅ 3 schermi simultanei</li>
+          <li>✅ <strong style="color:#00C4FF">Download</strong></li>
+          <li>✅ Senza pubblicità</li>
+        </ul>
+        <button onclick="closePopup('popup-ranks')" style="margin-top:16px;width:100%;padding:9px 0;border-radius:40px;background:#00C4FF;border:none;color:#000;font-weight:800;font-size:12px;cursor:pointer;font-family:var(--font);letter-spacing:.3px">
+          Scegli Medium
+        </button>
+      </div>
+
+      <!-- Premium -->
+      <div style="border:1.5px solid rgba(245,200,66,.55);border-radius:16px;padding:18px 16px;background:rgba(245,200,66,.06);position:relative">
+        <div style="position:absolute;top:-11px;left:50%;transform:translateX(-50%);background:linear-gradient(90deg,#F5C842,#FFAA00);color:#000;font-size:9px;font-weight:800;letter-spacing:1px;padding:3px 12px;border-radius:20px;white-space:nowrap">⭐ CONSIGLIATO</div>
+        <div style="font-size:10px;font-weight:800;letter-spacing:1.5px;color:#F5C842;text-transform:uppercase;margin-bottom:8px">👑 Premium</div>
+        <div style="font-size:26px;font-weight:900;color:var(--white);line-height:1">€8,99<span style="font-size:12px;font-weight:400;color:var(--txt3)">/mese</span></div>
+        <div style="font-size:10px;color:var(--txt3);margin-bottom:14px">o €69,99/anno</div>
+        <div class="popup-divider" style="margin:10px 0"></div>
+        <ul style="list-style:none;padding:0;margin:0;font-size:11px;color:var(--txt2);line-height:2;font-weight:500">
+          <li>✅ Streaming HD</li>
+          <li>✅ <strong style="color:#F5C842">Full HD 1080p</strong> ✨</li>
+          <li>✅ <strong style="color:#F5C842">4 schermi simultanei</strong></li>
+          <li>✅ <strong style="color:#F5C842">Download illimitati</strong></li>
+          <li>✅ Priorità massima</li>
+        </ul>
+        <button onclick="closePopup('popup-ranks')" style="margin-top:16px;width:100%;padding:9px 0;border-radius:40px;background:linear-gradient(90deg,#F5C842,#FFAA00);border:none;color:#000;font-weight:800;font-size:12px;cursor:pointer;font-family:var(--font);letter-spacing:.3px">
+          Scegli Premium
+        </button>
+      </div>
+
+    </div>
+    <p style="text-align:center;font-size:10px;color:var(--txt3);margin:0">I prezzi sono indicativi. Contatta l'amministratore per attivare il tuo piano.</p>
+  </div>
+</div>
+
+<script src="/static/js/all.js" defer></script>
+
+<script src="/static/js/auth.js" defer></script>
+</body>
+</html>

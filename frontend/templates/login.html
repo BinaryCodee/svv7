@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Login — StreamVault</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08080F;--bg2:#0D0D16;--surface:#13131E;--surface2:#1A1A28;--border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.13);--p:#6246EA;--p-l:#8B72FF;--p-glow:rgba(98,70,234,.4);--white:#FFF;--txt:rgba(255,255,255,.95);--txt2:rgba(255,255,255,.62);--txt3:rgba(255,255,255,.35);--coral:#FF5E6A;--neon:#00E5B0;--font:'Outfit',system-ui,sans-serif;--r:10px;--r2:16px;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;background:var(--bg);color:var(--txt);font-family:var(--font);-webkit-font-smoothing:antialiased}
+body{display:flex;align-items:center;justify-content:center;min-height:100dvh;padding:16px}
+body::before{content:'';position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.025;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");background-size:200px}
+.card{position:relative;z-index:1;background:var(--surface);border:1px solid var(--border2);border-radius:var(--r2);padding:36px 32px;width:100%;max-width:400px;box-shadow:0 48px 120px rgba(0,0,0,.8),0 0 0 1px rgba(98,70,234,.08)}
+.logo{display:flex;align-items:center;gap:10px;margin-bottom:28px;justify-content:center}
+.logo-icon{width:38px;height:38px;background:var(--p);border-radius:10px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 24px var(--p-glow)}
+.logo-icon svg{width:18px;height:18px;fill:white}
+.logo-text{font-size:20px;font-weight:900;letter-spacing:-.6px}
+h1{font-size:22px;font-weight:800;letter-spacing:-.5px;margin-bottom:4px;text-align:center}
+.sub{font-size:13px;color:var(--txt2);text-align:center;margin-bottom:24px;font-weight:300}
+.field{margin-bottom:16px}
+label{display:block;font-size:11px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--txt2);margin-bottom:6px}
+input[type=text],input[type=password]{width:100%;background:var(--surface2);border:1px solid var(--border2);border-radius:var(--r);padding:11px 14px;color:var(--txt);font-family:var(--font);font-size:14px;transition:border-color .2s,box-shadow .2s;outline:none}
+input:focus{border-color:var(--p-l);box-shadow:0 0 0 3px rgba(98,70,234,.18)}
+input::placeholder{color:var(--txt3)}
+/* honeypot — hidden from humans */
+.hp-field{position:absolute;left:-9999px;top:-9999px;opacity:0;pointer-events:none;tab-index:-1}
+.btn{display:flex;align-items:center;justify-content:center;gap:8px;width:100%;padding:12px;border-radius:40px;background:var(--p);color:white;font-family:var(--font);font-size:14px;font-weight:700;cursor:pointer;border:none;transition:all .2s;box-shadow:0 4px 20px var(--p-glow);margin-top:8px;min-height:44px}
+.btn:hover{background:var(--p-l);transform:translateY(-1px)}
+.btn:active{transform:scale(.97)}
+.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.divider{display:flex;align-items:center;gap:10px;margin:20px 0;color:var(--txt3);font-size:11px}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--border2)}
+.link-row{text-align:center;font-size:12px;color:var(--txt2)}
+.link-row a{color:var(--p-l);text-decoration:none;font-weight:600;cursor:pointer}
+.link-row a:hover{text-decoration:underline}
+.back-link{display:flex;align-items:center;justify-content:center;gap:5px;font-size:12px;color:var(--txt3);cursor:pointer;text-decoration:none;margin-top:16px;transition:color .18s}
+.back-link:hover{color:var(--p-ll)}
+.alert{padding:10px 14px;border-radius:var(--r);font-size:12px;font-weight:500;margin-bottom:14px;display:none}
+.alert.error{background:rgba(255,94,106,.12);border:1px solid rgba(255,94,106,.3);color:var(--coral)}
+.alert.success{background:rgba(0,229,176,.1);border:1px solid rgba(0,229,176,.28);color:var(--neon)}
+.spinner{width:16px;height:16px;border:2px solid rgba(255,255,255,.3);border-top-color:white;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+</style>
+</head>
+<body>
+<div class="card">
+  <div class="logo">
+    <div class="logo-icon"><svg viewBox="0 0 24 24"><polygon points="6,4 20,12 6,20"/></svg></div>
+    <span class="logo-text">StreamVault</span>
+  </div>
+  <h1>Accedi</h1>
+  <p class="sub">Inserisci username e password per continuare</p>
+
+  <div class="alert" id="alert"></div>
+
+  <form id="loginForm" autocomplete="off" novalidate>
+    <!-- Honeypot: bots fill this, humans don't -->
+    <div class="hp-field" aria-hidden="true">
+      <input type="text" name="email" tabindex="-1" autocomplete="off">
+    </div>
+
+    <div class="field">
+      <label for="username">Username</label>
+      <input type="text" id="username" name="username" placeholder="Il tuo username" autocomplete="username" required maxlength="32">
+    </div>
+    <div class="field">
+      <label for="password">Password</label>
+      <input type="password" id="password" name="password" placeholder="La tua password" autocomplete="current-password" required maxlength="128">
+    </div>
+
+    <button type="submit" class="btn" id="submitBtn">
+      <div class="spinner" id="spinner"></div>
+      <span id="btnText">Accedi</span>
+    </button>
+  </form>
+
+  <div class="divider">oppure</div>
+  <div class="link-row">Non hai un account? <a href="/register">Registrati</a></div>
+  <a href="/" class="back-link">← Torna alla home</a>
+</div>
+
+<script>
+(function(){
+  const form    = document.getElementById('loginForm');
+  const alert   = document.getElementById('alert');
+  const spinner = document.getElementById('spinner');
+  const btnText = document.getElementById('btnText');
+  const btn     = document.getElementById('submitBtn');
+
+  function showAlert(msg, type='error'){
+    alert.textContent = msg;
+    alert.className = 'alert ' + type;
+    alert.style.display = 'block';
+  }
+  function setLoading(on){
+    btn.disabled = on;
+    spinner.style.display = on ? 'block' : 'none';
+    btnText.textContent = on ? 'Accesso in corso…' : 'Accedi';
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    alert.style.display = 'none';
+    const username  = document.getElementById('username').value.trim();
+    const password  = document.getElementById('password').value;
+    // Read honeypot (should be empty)
+    const hp = form.querySelector('input[name="email"]').value;
+
+    if(!username || !password){ showAlert('Compila tutti i campi'); return; }
+    if(username.length < 3){ showAlert('Username troppo corto'); return; }
+    if(password.length < 8){ showAlert('Password troppo corta'); return; }
+
+    setLoading(true);
+    try {
+      const res = await fetch('/api/auth/login', {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        credentials: 'same-origin',
+        body: JSON.stringify({ username, password, email: hp })
+      });
+      const data = await res.json();
+      if(data.ok){
+        showAlert('Login effettuato! Reindirizzamento…', 'success');
+        setTimeout(() => { window.location.href = '/'; }, 600);
+      } else {
+        showAlert(data.error || 'Credenziali non valide');
+        setLoading(false);
+      }
+    } catch(err){
+      showAlert('Errore di rete. Riprova.');
+      setLoading(false);
+    }
+  });
+
+  // Prevent form resubmit on page reload
+  if(window.history.replaceState) window.history.replaceState(null,'',window.location.href);
+})();
+</script>
+</body>
+</html>

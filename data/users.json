@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "id": "46c81c75-0b4c-445e-9362-82311bdefba5",
+      "username": "vxcoadminstreaming",
+      "password_hash": "14401d6001ac106ecba224f47da4a4bf5d165abfab9e09d21f3001ca8c76c91b:0cdf69bcc3813f852b50e3726335480f874c2f5f1536f90f4a0922d124bd399b",
+      "role": "admin",
+      "rank": "Premium",
+      "is_admin": true,
+      "is_suspended": false,
+      "is_banned": false,
+      "is_blacklisted": false,
+      "created_at": "2025-01-01T00:00:00Z",
+      "last_login": "2026-04-06T07:29:02.565433+00:00",
+      "active_screens": 4,
+      "login_attempts": 0,
+      "locked_until": null
+    }
+  ],
+  "blacklist": [],
+  "sessions": {}
+}
